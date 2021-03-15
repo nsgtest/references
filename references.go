@@ -94,7 +94,7 @@ func upstream(args []string) *string{
 				fmt.Printf("%v is not existing!\n", url(os.Args[3], &args[i+1]))
 				panic(nil)
 			}
-			
+
 			return &args[i+1]
 		}
 	}
@@ -139,21 +139,21 @@ func url(file string, account *string) string{
 		fmt.Printf("Could not read from %v!\n", file)
 		panic(err)
 	}
-	
+
 	datasplit := strings.Split(string(data[:len(data) - 1]), " ")
-	
+
 	urlsplit := strings.Split(datasplit[len(datasplit) - 1], "/")
 	urlsplit[len(urlsplit) - 1] = strings.TrimSuffix(urlsplit[len(urlsplit) - 1], filepath.Ext(urlsplit[len(urlsplit) - 1]))
 
 	if account != nil {
 		urlsplit[3] = *account
 	}
-	
+
 	if strings.Contains(urlsplit[2], "github"){
-		return strings.Join([]string{urlsplit[0], "", strings.Join([]string{"api", urlsplit[2]}, "."), "repos", strings.Join(urlsplit[3:], "/"), "contents", strings.Join([]string{filename, "?ref=master"}, "")}, "/")
+		return strings.Join([]string{urlsplit[0], "", "raw.githubusercontent.com", strings.Join(urlsplit[3:], "/"), "master", filename}, "/")
 	}
 
-	if strings.Contains(urlsplit[2], "gitlab"){	
+	if strings.Contains(urlsplit[2], "gitlab"){
 		return strings.Join([]string{urlsplit[0], "", urlsplit[2], strings.Join(urlsplit[3:], "/"), "-", "raw", "master", strings.Join([]string{filename, "?inline=false"}, "")}, "/")
 	}
 
